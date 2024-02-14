@@ -24,4 +24,4 @@ There are two main data sources used to produce the results in this article. Bot
 
 
 ## Statement on LLM Usage
-Statement on LLM usage: Aspects of the code were written with the help of the autocomplete tool, Chat-GPT3.5. Some part of the discussion was written with the help of Chat-GPT3.5 for prompts.  The entire chat history documented at others/llm/usage.txt.
+Statement on LLM usage: Aspects of the code to generate figures and tables in this analysis were written with the help of the autocomplete tool, Chat-GPT4.0. Some part of the discussion section was written with the help of Chat-GPT4.0 for a list of prompts.  The entire chat history was documented in main folder/others/llm/usage.txt.
