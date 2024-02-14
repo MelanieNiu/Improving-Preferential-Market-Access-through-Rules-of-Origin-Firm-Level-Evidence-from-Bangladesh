@@ -1,0 +1,192 @@
+---
+title: "Assessing the Impact of Rules of Origin on Trade Volumes for Least Developed Countries "
+subtitle: "An analysis following the European Union Revision"
+author: 
+  - Yuchao Niu
+thanks: "Code and data are available at: https://github.com/MelanieNiu/Term-paper-2.git"
+date: today
+date-format: long
+abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
+format: pdf
+number-sections: true
+bibliography: references.bib
+---
+
+```{r}
+#| include: false
+#| warning: false
+#| message: false
+
+library(tidyverse)
+library(palmerpenguins)
+```
+
+
+# Introduction
+
+Every preferential trade agreement includes specific criteria, called rules of origin, that defines the origin of a product being imported. The rationale is to clearly classify the percentage of content of the imported goods or the extent of transformation happening within the country of origin. Nowadays stages of manufacturing processes can frequently happen in more than one country reflecting the complexity of global trade. The rules of origin determine whether exports from a country qualify for trade preferences in the form of lower tariffs, and it also has broader implications in tariff fraud prevention. However when the rules of origin are overly restrictive, they can disfavour the very countries that were supposed to benefit from preferential terms in the trade agreement. 
+
+This paper is reproduced from the paper Improving Preferential Market Access through Rules of Origin: Firm-Level Evidence from Bangladesh by Tobias Sytsma and seeks to understand how the relaxation of the rules of origin can impact international trade. 
+
+
+Plenty of literature have examined how changes in tariff rates can influence trade volumes, prices, and economic welfare(references: "Tariffs and Trade: Lessons from the 1930s" by Douglas A. Irwin (Comparative Economic Studies, 2019): By examining the trade policies of the 1930s, this paper offers historical insights into the effects of tariffs on international trade, including the consequences of the Smoot-Hawley Tariff, 
+Amiti, Mary, Stephen J. Redding, and David E. Weinstein. "The Impact of the 2018 Trade War on U.S. Prices and Welfare." Journal of Economic Perspectives, vol. 33, no. 4, Fall 2019, pp. 187–210.) However, very few literature have specifically reviewed the effect of changes in rules of origin.
+
+There is a gap in the literature on how apparel firms respond to the liberalization of rules of origin in their export products. 
+
+In 2001, the EU generated an Everything but Arms’ (EBA) agreement which was set in place to provide a preferential tariff on apparel imports from least-developed countries. Therefore, such nations would be able to export to the EU with quota-free and tariff-free transactions.
+
+However, the original EBA required the LDCs to utilize domestic textiles to manufacture apparel that they exported to the EU. This requirement negatively affected the exporting ability of LDCs since they were unable to meet the demand for domestic fabric to manufacture apparel for exportation.
+
+Thus, in light of these issues, in 2011, the EU modified the rule-of-origin rules to allow for international sourcing of fabric for apparel manufacturing.
+
+Therefore, the author looked at how the changes in the rules of origin of apparel products by the European Union affected export behaviour by least developed countries.
+Additionally, the author looked at the changes over time in market shares held by China and the LDCs in the global apparel market.
+
+Also, the author studied the rate of adoption of the EBA by Bangladeshi clothing exporters. This was done by comparing the exports from Bangladesh to the EU that benefited the EBA versus those that did not. 
+
+Lastly, in addition to what was done in the original paper, I wanted to analyze the rate of growth of the market shared by LDCs and China throughout 2002 and 2018. 
+
+This study found that once the EBA allowed LDCs to use internationally sourced fabric for their apparel products, there was a rapid increase in the use of the EBA by LCDs from 2010 to 2011. 
+
+From 2002 to 2008, it was found that China’s market share increased from 24% to 33% while the LDC’s market share increased from 3% to 8%. 
+
+The adoption rate of the EBA from 2001 until 2018 was found to be different between knitted and woven garments. For this entire period, the adoption rate for knitted clothing was almost 100 percent. Meanwhile, for woven garments, it started low at around 20%, but after the EBA agreement modifications in 2011, the rate of adoption rose by almost 55%.
+
+Also, the economic growth rate of China has slowed down since 2006, despite the market share increase. On the other hand, the growth rate of LDCs has increased from 3% in 2002 to 8% in 2018. Interestingly, LDCs even had a growth rate increase of 20%.
+
+This study is important because it provides a new understanding of the relationship between international trade policy, access to market in response to policy changes and export performance at the firm level. 
+Importantly, understanding the mechanisms through which export growth happens in LDCs can guide policy development. 
+
+
+
+
+# Data {#sec-data}
+
+```{r}
+#| label: fig-bills
+#| fig-cap: Bills of penguins
+#| echo: false
+
+
+```
+
+Talk more about it.
+
+And also planes (@fig-planes). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work well once you have enough text.)
+
+```{r}
+#| label: fig-planes
+#| fig-cap: Relationship between wing length and width
+#| echo: false
+#| warning: false
+#| message: false
+
+```
+
+Talk way more about it. 
+
+# Results
+
+Our results are summarized in @tbl-modelresults.
+
+```{r}
+#| echo: false
+#| eval: true
+#| warning: false
+#| message: false
+
+library(rstanarm)
+
+
+```
+
+```{r}
+#| echo: false
+#| eval: true
+#| label: tbl-modelresults
+#| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
+#| warning: false
+
+```
+
+
+# Discussion
+
+## Findings
+In this paper, I have replicated the results reported by Tobias Sytsma. The original author studied the 2011 revision to the rules of origin in the European Union’s Generalised System of Preferences. Under this revision, the apparel producers from the least developed countries are permitted to export goods with internationally sourced textile under the preferential agreement.  In my paper, I confirmed the author’s findings that 
+(1) After the revision the rate of utilization of the trade agreement has increased between 2001 and 2018. 
+(2) There are differential utilization rate for different categories of apparel products depending on their production processes. 
+(3) Globally, the market share in apparel exports for LDCs have increased since the revision.
+I have also found that the rate of growth in the global market share held by China has steadily decreased over the same time period compared to the least developed countries. While the majority of the study on international trade have focused on varying tariff rate to control export (reference),  the findings in this paper demonstrated the rules of origin can effectively increase trade volumes to nearly the same extent. 
+
+
+## Ethical Implications
+
+In the context of global trade, there are over 300 trade agreements in force today(reference). Different rules of origin in each agreement increase complexity. The least developed countries are among the most vulnerable in the complex global trade environment. This study justifies the Potential implications of this study including As  rules of origin and This study focused on least In least developed countries. Relaxing the rules of origin have positive impacts which include increased trade volumes for the least developed countries. This may translate into economic development and poverty reduction for these countries. As the textile industry employs nearly 40% of the labour force in Bangladesh, increased employment is a likely outcome that leads to continuous economic growth in the country. Moreover, increased trade volume helps integrate the LDCs into the global economy with increased market share, as demonstrated in Figure 4. In the future this can lead to more equitable global governance structures and trade policies. 
+
+Potential negative ethical implications include over dependence on international sources.  Shown in Figure 3, the capital intensive sector is the main sector contributing to the increased trade volume. In Bangladesh and other LDCs, internationally sourced textiles still come from a few major players in the world. Therefore the increased trade volume also increases the need for materials shipping from these countries. The beneficial economic and social outcomes are contingent on maintaining trade relationships between the LDCs and these countries. The LDCs can also become vulnerable to global market fluctuations, leading to economic instability. 
+
+
+## Third discussion point
+
+## Weaknesses and next steps
+
+Weaknesses and next steps should also be included.
+
+\newpage
+
+\appendix
+
+# Appendix {-}
+
+
+# Additional data details
+
+# Model details {#sec-model-details}
+
+## Posterior predictive check
+
+In @fig-ppcheckandposteriorvsprior-1 we implement a posterior predictive check. This shows...
+
+In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows... 
+
+```{r}
+#| eval: true
+#| echo: false
+#| message: false
+#| warning: false
+#| label: fig-ppcheckandposteriorvsprior
+#| layout-ncol: 2
+#| fig-cap: "Examining how the model fits, and is affected by, the data"
+#| fig-subcap: ["Posterior prediction check", "Comparing the posterior with the prior"]
+
+
+```
+
+## Diagnostics
+
+@fig-stanareyouokay-1 is a trace plot. It shows... This suggests...
+
+@fig-stanareyouokay-2 is a Rhat plot. It shows... This suggests...
+
+```{r}
+#| echo: false
+#| eval: true
+#| message: false
+#| warning: false
+#| label: fig-stanareyouokay
+#| fig-cap: "Checking the convergence of the MCMC algorithm"
+#| fig-subcap: ["Trace plot", "Rhat plot"]
+#| layout-ncol: 2
+
+```
+
+
+
+\newpage
+
+
+# References
+
+
