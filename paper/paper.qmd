@@ -17,8 +17,15 @@ bibliography: references.bib
 #| warning: false
 #| message: false
 
+##Set up packages and data files
+install.packages('Hmisc')
 library(tidyverse)
-library(palmerpenguins)
+library(dplyr)
+library(ggplot2)
+library(Hmisc)
+
+eurodata <- read_csv("../data/clean_data/cleaned_euro_data.csv")
+market_share <- read_csv("../data/clean_data/market_share.csv")
 ```
 
 
@@ -76,11 +83,22 @@ Talk more about it.
 And also planes (@fig-planes). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work well once you have enough text.)
 
 ```{r}
-#| label: fig-planes
+#| label: fig-1
 #| fig-cap: Relationship between wing length and width
 #| echo: false
 #| warning: false
 #| message: false
+
+### Create Figure 1
+ldc_only <-eurodata %>% group_by(year) %>% summarise(util=mean(frac), var=sd(frac))
+figure1<-ggplot(data=ldc_only, aes(x=year, y=util))+
+  geom_line( size=1, colour = "black")+
+  geom_point(size=2, colour = "black")+
+  labs(x = 'Year', y = "EBA Utilization Rate") +
+  theme_bw()+
+  theme(text = element_text(size=10),
+        axis.text.x = element_text())
+figure1
 
 ```
 
@@ -88,16 +106,83 @@ Talk way more about it.
 
 # Results
 
-Our results are summarized in @tbl-modelresults.
+Our results are summarized in @fig-1
 
 ```{r}
+#| label: fig-3
+#| fig-cap: "haha"
 #| echo: false
-#| eval: true
 #| warning: false
 #| message: false
 
-library(rstanarm)
+Figure3<-ggplot()+
+  geom_line(data=market_share, aes(x=Year, y=share, group=type, color=type), size=1)+
+  geom_point(data=market_share, aes(x=Year, y=share, group=type, color=type), size=3)+
+  ylab("Market Share")+
+  guides(color=guide_legend(title=""))+
+  theme_bw()+theme(text = element_text(size=20))+
+  scale_color_manual(values = c("Grey", "Black"))
+Figure3
 
+```
+
+
+```{r}
+#| label: fig-4
+#| fig-cap: "haha"
+#| echo: false
+#| warning: false
+#| message: false
+
+# Filter data for bangladesh
+bangladesh<-eurodata %>% filter(PARTNER_LAB=="BANGLADESH") %>%
+  group_by(year, woven)%>% summarise(gsp_value=sum(gsp_value), value=sum(value))%>%
+  mutate(frac=gsp_value/value)
+cols <- c("1" = "black", "0" = "grey")
+
+### Create Figure 4
+figure4<-ggplot(data=bangladesh, aes(x=year, y=frac, group=as.factor(woven)))+
+  geom_line(data=bangladesh, aes(x=year, y=frac, color=as.factor(woven)), size=1)+
+  geom_point(data=bangladesh, aes(x=year, y=frac, color=as.factor(woven)), size=3)+
+  xlab("Year")+ylab("Utilization Rate")+
+  ggtitle("")+
+  labs(color = "") +
+  scale_color_manual(values=cols, breaks=c("1","0"),
+                     labels=c("Woven", "Knit"))+theme_bw()+
+  scale_x_continuous(name="Year", limits=c(2001, 2018), breaks = scales::pretty_breaks(n = 9))+
+  scale_y_continuous( limits=c(.1, 1), breaks = scales::pretty_breaks(n = 5))+
+  theme(legend.position="bottom", legend.direction="horizontal",
+        axis.text.x = element_text(color = "black", size = 10,  face = "plain"),
+        axis.text.y = element_text(color = "black", size = 10,  face = "plain"),
+        axis.title.x = element_text(color = "Black", size = 10, face = "plain"),
+        axis.title.y = element_text(color = "Black", size = 10, face = "plain"),
+        legend.text=element_text(size=10),
+        plot.title = element_text(size=10))
+
+figure4
+
+```
+
+```{r}
+#| label: fig-5
+#| fig-cap: "haha"
+#| echo: false
+#| warning: false
+#| message: false
+
+market_share <- market_share %>%
+  arrange(type, Year) %>%
+  group_by(type) %>%
+  mutate(yearly_growth_rate = (share - lag(share)) / lag(share) * 100)
+
+Figure5 <- ggplot(market_share, aes(x = Year, y = yearly_growth_rate, group = type, fill = type)) + 
+  geom_bar(stat = 'identity', size = 1, position = position_dodge(width = 0.9)) +
+  labs(y = "Yearly Growth Rate", title = "Figure 5 Yearly Growth Rate of Market Share for China and LDCs") +
+  guides(color = guide_legend(title = "")) +
+  theme_bw() +
+  theme(text = element_text(size = 10))
+
+Figure5
 
 ```
 
@@ -107,6 +192,7 @@ library(rstanarm)
 #| label: tbl-modelresults
 #| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
 #| warning: false
+
 
 ```
 
