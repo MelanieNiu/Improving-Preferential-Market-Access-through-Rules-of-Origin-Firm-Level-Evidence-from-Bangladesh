@@ -1,14 +1,16 @@
 ---
-title: "Assessing the Impact of Rules of Origin on Trade Volumes for Least Developed Countries "
-subtitle: "An analysis following the European Union Revision"
+title: "Assessing the Impact of Rules of Origin Utilization of Preferential Trade Agreements for Least Developed Countries"
+subtitle: "An analysis of the global apparel trade pattern following the 2011 Revision to the Everything But Arm Trade Agreement"
+
 author: 
   - Yuchao Niu
-thanks: "Code and data are available at: https://github.com/MelanieNiu/Term-paper-2.git"
+thanks: "Code and data are available at: https://github.com/MelanieNiu/Term-paper-2.git replications package available at: https://doi.org/10.48152/ssrp-ee8y-d171"
 date: today
 date-format: long
-abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
+abstract: "Rules of origin defined in preferential trade agreements specify the content percentage or transformation within the origin country. This paper analyzed the rules of origin revision to the European Union ‘Everything But Arms(EBA)’ trade agreement and found the utilization of the EBA by Bangladeshi apparel producers from 2010 to 2011 and a 20% increase in the market share by the least developed countries, contrasted with a decline in the market share held by China. It also highlights the differential impact on garment types, with knitwear being consistently high and woven garment adoption surging post-2011. Our understanding of the interplay between these can guide international trade policy."
 format: pdf
 number-sections: true
+toc: true
 bibliography: references.bib
 ---
 
@@ -19,71 +21,97 @@ bibliography: references.bib
 
 ##Set up packages and data files
 install.packages('Hmisc')
+install.packages('gtsummary')
+install.packages('kableextra')
+library('gtsummary')
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
 library(Hmisc)
+library(gtsummary)
+library(kableExtra)
 
 eurodata <- read_csv("../data/clean_data/cleaned_euro_data.csv")
+
 market_share <- read_csv("../data/clean_data/market_share.csv")
 ```
 
 
 # Introduction
 
-Every preferential trade agreement includes specific criteria, called rules of origin, that defines the origin of a product being imported. The rationale is to clearly classify the percentage of content of the imported goods or the extent of transformation happening within the country of origin. Nowadays stages of manufacturing processes can frequently happen in more than one country reflecting the complexity of global trade. The rules of origin determine whether exports from a country qualify for trade preferences in the form of lower tariffs, and it also has broader implications in tariff fraud prevention. However when the rules of origin are overly restrictive, they can disfavour the very countries that were supposed to benefit from preferential terms in the trade agreement. 
+Preferential trade agreements define the origin of imported products through rules of origin, specifying the content percentage or transformation within the origin country. These rules, essential for determining trade preferences and preventing tariff fraud, if too restrictive, can disadvantage countries which the preferential terms in the trade agreement intent to benefit.  Although changes in tariff rates and their effects on trade have been widely studied, the impact of rules of origin modifications remains less explored.
 
-This paper is reproduced from the paper Improving Preferential Market Access through Rules of Origin: Firm-Level Evidence from Bangladesh by Tobias Sytsma and seeks to understand how the relaxation of the rules of origin can impact international trade. 
+This paper is reproduced from by "Improving Preferential Market Access through Rules of Origin: Firm-Level Evidence from Bangladesh" by Tobias Sytsma, investigates how relaxing rules of origin affects global trade, especially for least developed countries (LDCs) which United Nations have defined as "low-income countries confronting severe structural impediments to sustainable development, and are highly vulnerable to economic and environmental shocks." The estimand of this study is the relationship between rules of origin adjustments in trade agreements and subsequent trade volume changes. Utilizing global trade data from the European Union and the United Nations, the study examines the impact of the European Union's Everything but Arms (EBA) agreement changes in 2011, which allowed LDCs to use international fabric sources for apparel exports to the EU. The study analyzed Bangladesh's exports to the EU, comparing those benefitting from the EBA to those that did not and showed a rapid increase in the utilization of the EBA by Bangladeshi apparel producers from 2010 to 2011. The analysis also found a decline in China's share in the global apparel market versus a 20% increase in LDCs' market share from 2002 to 2018. Furthermore, the EBA's impact varied across garment types: knit garment utilization was near 100% throughout, while woven garment adoption rose from 20% to almost 100% post-2011 changes.
+
+The remainder of this paper is organized as follows. In @sec-data, I the data and methodology utilized in this study. @sec-result presents the result of the analysis and @sec-discuss discusses the implications, limitations and future directions of the study. 
+
+# Data{#sec-data}
+
+## Data Source
+
+The paper I have used for replication is Improving Preferential Market Access through Rules of Origin: Firm-Level Evidence from Bangladesh. This paper explores a 2011 revision to the rules of origin associated with the European Union’s Generalized System of Preferences, which allowed internationally sourced textiles in exported apparel products from least developed countries. This paper reproduces and addresses 2 findings reported in the original paper, utilizing the same datasets.
+
+The original paper acquired data from several publicly accessible data sources and the data were subsequently organized for analysis in the paper. The data sources utilized by the original paper are listed and described below. 
+
+- Transaction-level administrative trade data for Bangladesh
+- Eurostat's Adjusted extra-EU imports since 2000 by tariff regime, by HS2-4-6 and CN8 data
+- The United Nations Commodity Trade Statistics (Comtrade) Database 
+- Bangladesh Garments Manufacturer and Exporter Association export data
+
+## Data Characteristics
+In this paper I specifically explored the dataset retrieved from Eurostat database and The United Comtrade database.
+
+The United Nations Comtrade dataset contains five variables: ‘year’, ‘apparel export value’, ‘total apparel export value across all exporters’, ‘export/total’, and ‘exporter type’. The ‘year’ variable ranges between 2012-2020. The ‘apparel export value’ variable represents the monetary value of the apparel exported by a country in a given year. It provides insights into the economic scale of the country’s apparel industry in the global market. The ‘total apparel export value across all exporters’ variable represents the global or cumulative monetary value of apparel exports from all countries for a given year. It indicates the overall size of the global apparel trade as a benchmark of individual exporters' performances against the total market. The ‘export/total’ variable is derived from dividing the apparel export value by the total apparel export value across all exporters) indicates the proportion of the global apparel market that is accounted for by a specific country or exporter. The ‘exporter type’ variable indicates if the exporter is China or one of the least developed countries.Table @tbl-1 shows a summary statistics for the dataset from the year 2018.
+
+The Eurostat's Adjusted extra-EU imports since 2000 by tariff regime, by HS2-4-6 and CN8 dataset was initially retrieved by the authors of the original paper in March 2018. This dataset contains 90659 records of 9 variables  ‘importer’, ‘exporter’, ‘product HS code’, ‘product description’, ‘processing type’, ‘preference eligibility’, ‘Preferences product was imported under’, ‘Year of transaction’, ‘Value of transaction’. Table @tbl-2 displays the summary statistics for the dataset from the year 2018.
+
+The ‘exporter’ variable represents one of the least developed countries. The ‘year of transaction’ ranges between 2001-2018. The ‘importer’ variable represents any country that imports from the least developed country for a given year. The ‘product HS code’ is a standardised numerical method of classifying traded products, known as the Harmonized System (HS) code. These codes are internationally agreed upon for classification of goods. ‘Product description’ provides additional details beyond the code classification. ‘Processing type’ indicates the stage of processing that the product has undergone, ranging from raw materials to semi-finished to finished goods. ‘preference eligibility’ Identifies whether a product is eligible for preferential treatment under trade agreements, such as reduced tariffs or quotas., ‘Preferences product was imported under’ Specifies the particular trade preferences or agreements under which a product was imported, such as Generalized System of Preferences (GSP), Free Trade Agreements (FTAs), etc., ‘Value of transaction’ indicates The monetary value of the trade transaction in euro. This quantifies the economic scale of the trade.
+
+## Data Measurements
+
+Both dataset contain quantitative and objective data. The primary sources of trading information are individual country’s governments and national statistical institutions such as customs and national statistical offices. These authorities are responsible for compiling their country's trade data. The data were then reported to the United Nations Comtrade database. Countries report their trade data in accordance with the United Nations' International Merchandise Trade Statistics (IMTS) guidelines. These guidelines help standardize data collection and reporting practices across countries. In addition the Harmonized System,developed by the World Customs Organization (WCO), is an internationally standardized system of names and numbers to classify traded products. Participating countries therefore classify traded goods on a common basis for customs purposes. Countries report their trade data using HS codes, which the UN Comtrade then uses to aggregate and present the data. Once the UN receives trade data from national authorities, the data undergo processing which includes converting data into a common currency (usually US dollars), adjusting for inflation, and harmonizing commodity classifications across different countries' reporting systems (@UNStats2023)
+
+Potential sources of biases for these datasets may include differences in the inclusion and exclusion of certain items due to interpretation of the product codes. Also the availability of data depends on the reporting practices of individual countries, which can vary in timeliness. 
+Another potential source of inaccuracy may arise from the data collection methods in the decades prior to the establishment of electronic systems.  
+
+Similarly Eurostat collects trade data from the national statistical institutes of the European Union Member States. Each country is responsible for gathering their trade data according to EU regulations and guidelines. In addition to the Harmonized System (HS), Eustat also utilizes Combined Nomenclature (CN) to classify goods. The CN is more detailed than the HS, extending to the 8-digit level, allowing for more precise classification of goods (@UNStats2023). 
+
+Potential challenges and limitations include the reliance on accurate reporting by EU Member States as the measurements are conducted by each individual country allowing for room for error. The HS and CN systems are updated periodically, which can affect the comparability of data over time. Lastly, determining the correct tariff regime for each import can be complicated due to the variety of trade agreements and rules.
+
+R [@citeR] was the language and environment used for the bulk of this analysis, alongside the tidyverse [@thereferencecanbewhatever], kableExtra [@Zhu2019kableExtra], Hmisc [@HarrellHmisc], ggplot2[@Wickham2016ggplot2], gitsummary[@gitsummary2023]have been used in data cleaning and visualization.
 
 
-Plenty of literature have examined how changes in tariff rates can influence trade volumes, prices, and economic welfare(references: "Tariffs and Trade: Lessons from the 1930s" by Douglas A. Irwin (Comparative Economic Studies, 2019): By examining the trade policies of the 1930s, this paper offers historical insights into the effects of tariffs on international trade, including the consequences of the Smoot-Hawley Tariff, 
-Amiti, Mary, Stephen J. Redding, and David E. Weinstein. "The Impact of the 2018 Trade War on U.S. Prices and Welfare." Journal of Economic Perspectives, vol. 33, no. 4, Fall 2019, pp. 187–210.) However, very few literature have specifically reviewed the effect of changes in rules of origin.
-
-There is a gap in the literature on how apparel firms respond to the liberalization of rules of origin in their export products. 
-
-In 2001, the EU generated an Everything but Arms’ (EBA) agreement which was set in place to provide a preferential tariff on apparel imports from least-developed countries. Therefore, such nations would be able to export to the EU with quota-free and tariff-free transactions.
-
-However, the original EBA required the LDCs to utilize domestic textiles to manufacture apparel that they exported to the EU. This requirement negatively affected the exporting ability of LDCs since they were unable to meet the demand for domestic fabric to manufacture apparel for exportation.
-
-Thus, in light of these issues, in 2011, the EU modified the rule-of-origin rules to allow for international sourcing of fabric for apparel manufacturing.
-
-Therefore, the author looked at how the changes in the rules of origin of apparel products by the European Union affected export behaviour by least developed countries.
-Additionally, the author looked at the changes over time in market shares held by China and the LDCs in the global apparel market.
-
-Also, the author studied the rate of adoption of the EBA by Bangladeshi clothing exporters. This was done by comparing the exports from Bangladesh to the EU that benefited the EBA versus those that did not. 
-
-Lastly, in addition to what was done in the original paper, I wanted to analyze the rate of growth of the market shared by LDCs and China throughout 2002 and 2018. 
-
-This study found that once the EBA allowed LDCs to use internationally sourced fabric for their apparel products, there was a rapid increase in the use of the EBA by LCDs from 2010 to 2011. 
-
-From 2002 to 2008, it was found that China’s market share increased from 24% to 33% while the LDC’s market share increased from 3% to 8%. 
-
-The adoption rate of the EBA from 2001 until 2018 was found to be different between knitted and woven garments. For this entire period, the adoption rate for knitted clothing was almost 100 percent. Meanwhile, for woven garments, it started low at around 20%, but after the EBA agreement modifications in 2011, the rate of adoption rose by almost 55%.
-
-Also, the economic growth rate of China has slowed down since 2006, despite the market share increase. On the other hand, the growth rate of LDCs has increased from 3% in 2002 to 8% in 2018. Interestingly, LDCs even had a growth rate increase of 20%.
-
-This study is important because it provides a new understanding of the relationship between international trade policy, access to market in response to policy changes and export performance at the firm level. 
-Importantly, understanding the mechanisms through which export growth happens in LDCs can guide policy development. 
-
-
-
-# Data {#sec-data}
-
-```{r}
-#| label: fig-bills
-#| fig-cap: Bills of penguins
+```{r message = FALSE}
+#| label: tbl-1
+#| tbl-cap: "Summary Statistics for Eurostat's Adjusted extra-EU imports since 2000 by tariff regime, by HS2-4-6 and CN8 dataset"
 #| echo: false
 
+eurodata_summary <- eurodata %>%
+  filter(year == "2018") %>%
+  select(-1,-post, -frac, -year) %>%
+  tbl_summary(
+    
+    label = list(PARTNER_LAB ~ "LDC Country", DECLARANT_LAB ~ "Importing Country")
+  ) 
+
+eurodata_summary
+```
+
+```{r message = FALSE}
+#| label: tbl-2
+#| tbl-cap: "Summary Statistics of The UN Comtrade in 2018"
+#| echo: false
+kable((market_share %>% filter(Year == '2002') %>% select(-1) %>% rename("Export (in US $)" = export, "Total (in US $)" = total, "Share" = share, "Type" = type)))
 
 ```
 
-Talk more about it.
+# Results{#sec-result}
 
-And also planes (@fig-planes). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work well once you have enough text.)
+After the regulation of EBA came into effect in 2011, which now allowed LDCs to outsource textile materials from other nations without restrictions. the utilization rate of EBA rises quickly. Figure @fig-1 illustrates the proportion of proportion of apparel imports from LDCs into the EU under the EBA from 2001 to 2018. A marked rise in the utilization rate occurs in 2011. From 2010 to 2011, there was a 20 percentage point increase in the share of apparel items entering the EU without tariffs under the EBA.
 
 ```{r}
 #| label: fig-1
-#| fig-cap: Relationship between wing length and width
+#| fig-cap: Utilization of the EBA by LDCs
 #| echo: false
 #| warning: false
 #| message: false
@@ -101,34 +129,54 @@ figure1
 
 ```
 
-Talk way more about it. 
-
-# Results
-
-Our results are summarized in @fig-1
+China dominates as the world's largest apparel exporter due to its established infrastructure and vast labor pool. Historically China holds the largest share in global apparel market. Figure @fig-2 compares trend of the market share of China between 2001-2018 and the LDCs combined. From 2002 to 2018, China's share in the global market rose from 24 percent to 33 percent. In contrast, the LDCs' market share, despite being relatively small, increased from about 3 percent in 2002 to around 8 percent in 2018.
 
 ```{r}
-#| label: fig-3
-#| fig-cap: "haha"
+#| label: fig-2
+#| fig-cap: "Market Share in Global Apparel Exports"
 #| echo: false
 #| warning: false
 #| message: false
 
-Figure3<-ggplot()+
+Figure2<-ggplot()+
   geom_line(data=market_share, aes(x=Year, y=share, group=type, color=type), size=1)+
   geom_point(data=market_share, aes(x=Year, y=share, group=type, color=type), size=3)+
-  ylab("Market Share")+
+  labs(y = "Market Share")+
   guides(color=guide_legend(title=""))+
-  theme_bw()+theme(text = element_text(size=20))+
+  theme_bw()+theme(text = element_text(size=10))+
   scale_color_manual(values = c("Grey", "Black"))
-Figure3
+Figure2
 
 ```
 
+In addition to the analysis conducted in the original paper, I am also interested in finding out if the revision to EBA has an impact on the rate of change in market shares held by these two groups. I compared the year-to-year market share growth rate between China and LDCs. The result is shown in Figure @fig-3. From 2001 to 2018, China's growth rate in market share peaked in 2006, and has since steadily declined in spite of the increase in their total market share from 24 percent to 33 percent as reported by the original paper. In contrast, the LDCs' market share has shown steady growth after the relaxation of the rule of origin with only the exception of negative growth in 2016. In the last decade, the LDC market share growth rate reached as high as 20%  while its total market share increased from about 3 percent in 2002 to around 8 percent in 2018.
+
+```{r}
+#| label: fig-3
+#| fig-cap: "Yearly Growth Rate of Market Share for China and LDCs"
+#| echo: false
+#| warning: false
+#| message: false
+
+market_share <- market_share %>%
+  arrange(type, Year) %>%
+  group_by(type) %>%
+  mutate(yearly_growth_rate = (share - lag(share)) / lag(share) * 100)
+
+Figure3 <- ggplot(market_share, aes(x = Year, y = yearly_growth_rate, group = type, fill = type)) + 
+  geom_bar(stat = 'identity', size = 1, position = position_dodge(width = 0.9)) +
+  labs(y = "Yearly Growth Rate") +
+  guides(color = guide_legend(title = "")) +
+  theme_bw() +
+  theme(text = element_text(size = 10))
+Figure3
+```
+
+Among the LDCs, Bangladesh is a major apparel exporter. However, Bangladesh also heavily relies on textile import from other countries such as China. Comparing different types of apparels, woven wears are more dependent on imported textile than knit wears. Figure @fig-4 shows the utilization rate of the EBA initiative by Bangladeshi clothing producers for woven and knit wears. The utilization rate for knit wear is close to 100 percent throughout the observed period, suggesting that nearly all knitted garments from Bangladesh utilized locally made textile. On the other hand, the utilization rate for woven garments was only at 20 percent before the EBA revision, but increased quickly to nearly 100% in 2011. 
 
 ```{r}
 #| label: fig-4
-#| fig-cap: "haha"
+#| fig-cap: "Change in EBA Utilization Rate For Apparel Products"
 #| echo: false
 #| warning: false
 #| message: false
@@ -140,11 +188,10 @@ bangladesh<-eurodata %>% filter(PARTNER_LAB=="BANGLADESH") %>%
 cols <- c("1" = "black", "0" = "grey")
 
 ### Create Figure 4
-figure4<-ggplot(data=bangladesh, aes(x=year, y=frac, group=as.factor(woven)))+
+Figure4<-ggplot(data=bangladesh, aes(x=year, y=frac, group=as.factor(woven)))+
   geom_line(data=bangladesh, aes(x=year, y=frac, color=as.factor(woven)), size=1)+
   geom_point(data=bangladesh, aes(x=year, y=frac, color=as.factor(woven)), size=3)+
-  xlab("Year")+ylab("Utilization Rate")+
-  ggtitle("")+
+  labs(x = "Year", y = "Utilization Rate")+
   labs(color = "") +
   scale_color_manual(values=cols, breaks=c("1","0"),
                      labels=c("Woven", "Knit"))+theme_bw()+
@@ -158,32 +205,10 @@ figure4<-ggplot(data=bangladesh, aes(x=year, y=frac, group=as.factor(woven)))+
         legend.text=element_text(size=10),
         plot.title = element_text(size=10))
 
-figure4
+Figure4
 
 ```
 
-```{r}
-#| label: fig-5
-#| fig-cap: "haha"
-#| echo: false
-#| warning: false
-#| message: false
-
-market_share <- market_share %>%
-  arrange(type, Year) %>%
-  group_by(type) %>%
-  mutate(yearly_growth_rate = (share - lag(share)) / lag(share) * 100)
-
-Figure5 <- ggplot(market_share, aes(x = Year, y = yearly_growth_rate, group = type, fill = type)) + 
-  geom_bar(stat = 'identity', size = 1, position = position_dodge(width = 0.9)) +
-  labs(y = "Yearly Growth Rate", title = "Figure 5 Yearly Growth Rate of Market Share for China and LDCs") +
-  guides(color = guide_legend(title = "")) +
-  theme_bw() +
-  theme(text = element_text(size = 10))
-
-Figure5
-
-```
 
 ```{r}
 #| echo: false
@@ -196,28 +221,35 @@ Figure5
 ```
 
 
-# Discussion
+# Discussion{#sec-discuss}
 
 ## Findings
-In this paper, I have replicated the results reported by Tobias Sytsma. The original author studied the 2011 revision to the rules of origin in the European Union’s Generalised System of Preferences. Under this revision, the apparel producers from the least developed countries are permitted to export goods with internationally sourced textile under the preferential agreement.  In my paper, I confirmed the author’s findings that 
+
+In this reproduced paper from mproving Preferential Market Access through Rules of Origin: Firm-Level Evidence from Bangladesh by Tobias Sytsma, I confirmed the author’s findings that 
 (1) After the revision the rate of utilization of the trade agreement has increased between 2001 and 2018. 
 (2) There are differential utilization rate for different categories of apparel products depending on their production processes. 
 (3) Globally, the market share in apparel exports for LDCs have increased since the revision.
-I have also found that the rate of growth in the global market share held by China has steadily decreased over the same time period compared to the least developed countries. While the majority of the study on international trade have focused on varying tariff rate to control export (reference),  the findings in this paper demonstrated the rules of origin can effectively increase trade volumes to nearly the same extent. 
 
+The findings in this paper demonstrated the rules of origin can also effectively increase the utilization rate of preferential trade agreement. While the majority of the study on international trade have focused on varying tariff rate to control export [@Irwin2011], our analysis provides evidence that changing rules of origin can be another venue for trade management.
+
+In the context of global trade, there are over 300 trade agreements in force today [@WTO2023]. Different rules of origin in each agreement adds to this complexity. The least developed countries are among the most vulnerable in the complex global trade environment. The significant increase in the global market growth rate of LDCs supports that the revision to the rules of origin is effective. These modifications align with the trade agreement's primary goal of helping the LDCs develop their domestic industries. 
 
 ## Ethical Implications
 
-In the context of global trade, there are over 300 trade agreements in force today(reference). Different rules of origin in each agreement increase complexity. The least developed countries are among the most vulnerable in the complex global trade environment. This study justifies the Potential implications of this study including As  rules of origin and This study focused on least In least developed countries. Relaxing the rules of origin have positive impacts which include increased trade volumes for the least developed countries. This may translate into economic development and poverty reduction for these countries. As the textile industry employs nearly 40% of the labour force in Bangladesh, increased employment is a likely outcome that leads to continuous economic growth in the country. Moreover, increased trade volume helps integrate the LDCs into the global economy with increased market share, as demonstrated in Figure 4. In the future this can lead to more equitable global governance structures and trade policies. 
+There are positive impacts from relaxing the rules of origin. Increasing the market share of LDCs may translate into economic development and poverty reduction for these countries. As the textile industry employs nearly 40% of the labour force in Bangladesh, increased employment is a likely outcome that leads to continuous economic growth in the country. Moreover, increased trade volume helps integrate the LDCs into the global economy with increased market share, as demonstrated in Figure 4. In the future this can lead to more equitable global governance structures and trade policies. 
 
-Potential negative ethical implications include over dependence on international sources.  Shown in Figure 3, the capital intensive sector is the main sector contributing to the increased trade volume. In Bangladesh and other LDCs, internationally sourced textiles still come from a few major players in the world. Therefore the increased trade volume also increases the need for materials shipping from these countries. The beneficial economic and social outcomes are contingent on maintaining trade relationships between the LDCs and these countries. The LDCs can also become vulnerable to global market fluctuations, leading to economic instability. 
+Potential negative ethical implications include over dependence on international sources. Shown in @Fig-3, the capital intensive sector is the main sector contributing to the increased trade volume. In Bangladesh and other LDCs, internationally sourced textiles still come from a few major players in the world. Therefore the increased trade volume also increases the need for materials shipping from these countries. The beneficial economic and social outcomes are contingent on maintaining trade relationships between the LDCs and these countries. The LDCs can also become vulnerable to global market fluctuations, leading to economic instability. 
 
-
-## Third discussion point
 
 ## Weaknesses and next steps
 
-Weaknesses and next steps should also be included.
+Possible biases in these datasets could stem from varied interpretations of product codes, leading to discrepancies in which trade items are included or excluded. Additionally, data availability is subject to the reporting habits of different countries, which may differ in promptness. Furthermore, inaccuracies might result from the data gathering techniques used prior to the adoption of electronic systems in LDCs, potentially affecting the reliability of trade data as it is reported by individual nations. Also, there was a focus on Bangladesh for study constraints, this may in turn limit the conclusions made concerning other nations given their specific economic situation. 
+
+Future research can include longitudinal studies to examine the long-term effect of increased trade volume in the least developed countries. This can include, looking at their gross domestic product, foreign investment, and employment rates, among others.
+In light of the concern that this may lead to increased dependency on foreign countries to provide manufacturing materials, another future direction can include studying the long term dependency of LDCs on foreign countries. 
+Another point of future work may include the effects of these policy changes in the EU countries, including if there are countries that showed higher imports than others from LDCs. 
+Lastly, a study on the effect of these policies generated by the EU on other developed nations to enhance LDCs export rates to those nations.
+
 
 \newpage
 
@@ -225,37 +257,11 @@ Weaknesses and next steps should also be included.
 
 # Appendix {-}
 
+## Data cleaning
 
-# Additional data details
+The Eurostat's Adjusted extra-EU imports since 2000 by tariff regime, by HS2-4-6 and CN8 data was cleaned by first removing the index column. The column names were then renamed to be descriptive names. I then excluded aggregate data that represent totals for the European Union or its member states, focusing only on transaction-level data. I then isolated transactions under specific trade regimes, Generalized System of Preferences ("GSP ZERO" and "GSP NON ZERO") for analysis. Aggregate trade values within each group to get total trade values for analysis. I set missing GSP values to 0 and computed the utilization rate by dividing GSP value over the total value. Lastly, I introduced binary indicators for transactions occurring post 2011 and for identifying product categories i.e., woven vs knit. 
 
-# Model details {#sec-model-details}
-
-## Posterior predictive check
-
-In @fig-ppcheckandposteriorvsprior-1 we implement a posterior predictive check. This shows...
-
-In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows... 
-
-```{r}
-#| eval: true
-#| echo: false
-#| message: false
-#| warning: false
-#| label: fig-ppcheckandposteriorvsprior
-#| layout-ncol: 2
-#| fig-cap: "Examining how the model fits, and is affected by, the data"
-#| fig-subcap: ["Posterior prediction check", "Comparing the posterior with the prior"]
-
-
-```
-
-## Diagnostics
-
-@fig-stanareyouokay-1 is a trace plot. It shows... This suggests...
-
-@fig-stanareyouokay-2 is a Rhat plot. It shows... This suggests...
-
-```{r}
+``{r}
 #| echo: false
 #| eval: true
 #| message: false
