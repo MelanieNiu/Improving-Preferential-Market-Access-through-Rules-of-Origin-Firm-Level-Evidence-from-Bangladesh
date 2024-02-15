@@ -13,6 +13,7 @@ library(Hmisc)
 #### Clean data ####
 
 euro_data <- read_csv("data/raw_data/Eurostat.csv") %>% select(-1)
+head(euro_data)
 
 #Renaming columns
 label(euro_data$DECLARANT_LAB)<-"Importer"
