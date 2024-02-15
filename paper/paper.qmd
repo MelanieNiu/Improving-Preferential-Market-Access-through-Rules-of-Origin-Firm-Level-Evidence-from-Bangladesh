@@ -67,7 +67,6 @@ Importantly, understanding the mechanisms through which export growth happens in
 
 
 
-
 # Data {#sec-data}
 
 ```{r}
